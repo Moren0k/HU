@@ -1,5 +1,6 @@
 using Hu.Application.DTOs;
 using Hu.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hu.Api.Controllers;
@@ -33,6 +34,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [Authorize]
     public async Task<IActionResult> GetById(int id)
     {
         var user = await _userService.GetUserAsync(id);
@@ -40,6 +42,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> GetAll()
     {
         var users = await _userService.GetAllUsersAsync();
@@ -47,6 +50,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update(int id, [FromBody] RegisterUserDto userDto)
     {
         await _userService.UpdateUserAsync(id, userDto);
@@ -54,6 +58,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Remove(int id)
     {
         await _userService.RemoveUserAsync(id);

@@ -18,11 +18,13 @@ public class UserService : IUserService
 
     public async Task RegisterUserAsync(RegisterUserDto userDto)
     {
+        var hashedPassword = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
+        
         var registerUser = new User
         {
             Username = userDto.Username,
             Email = userDto.Email,
-            Password = userDto.Password,
+            Password = hashedPassword,
             Role = userDto.Role
         };
 
