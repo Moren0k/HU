@@ -21,7 +21,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Registrar servicios
 
-// Configuracion pública
+// Configuración pública
 var configuration = builder.Configuration;
 var issuer = configuration["Jwt:Issuer"]; // Desde App settings
 var audience = configuration["Jwt:Audience"]; // Desde App settings
@@ -50,7 +50,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -76,7 +76,8 @@ if (app.Environment.IsDevelopment())
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

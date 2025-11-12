@@ -8,10 +8,12 @@ namespace Hu.Application.Services;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IAuthService _authService;
 
-    public UserService(IUserRepository userRepository)
+    public UserService(IUserRepository userRepository, IAuthService authService)
     {
         _userRepository = userRepository; // Repository
+        _authService = authService;
     }
 
     public async Task RegisterUserAsync(RegisterUserDto userDto)
@@ -27,9 +29,9 @@ public class UserService : IUserService
         await _userRepository.AddAsync(registerUser);
     }
 
-    public Task<string?> LoginUserAsync(LoginUserDto userDto)
+    public async Task<string?> LoginUserAsync(LoginUserDto userDto)
     {
-        throw new NotImplementedException(); //CONTINUAR CON JWT
+        return await _authService.Authenticate(userDto);
     }
 
     public async Task UpdateUserAsync(int id, RegisterUserDto userDto)
