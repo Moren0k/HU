@@ -1,0 +1,85 @@
+using Hu.Application.DTOs;
+using Hu.Application.Interfaces;
+using Hu.Domain.Entities;
+using Hu.Domain.Interfaces;
+
+namespace Hu.Application.Services;
+
+public class UserService : IUserService
+{
+    private readonly IUserRepository _userRepository;
+
+    public UserService(IUserRepository userRepository)
+    {
+        _userRepository = userRepository; // Repository
+    }
+
+    public async Task RegisterUserAsync(RegisterUserDto userDto)
+    {
+        var registerUser = new User
+        {
+            Username = userDto.Username,
+            Email = userDto.Email,
+            Password = userDto.Password,
+            Role = userDto.Role
+        };
+
+        await _userRepository.AddAsync(registerUser);
+    }
+
+    public Task<string?> LoginUserAsync(LoginUserDto userDto)
+    {
+        throw new NotImplementedException(); //CONTINUAR CON JWT
+    }
+
+    public async Task UpdateUserAsync(int id, RegisterUserDto userDto)
+    {
+        var updateUser = await _userRepository.GetByIdAsync(id);
+
+        if (updateUser == null) throw new Exception("User not found");
+
+        updateUser.Username = userDto.Username;
+        updateUser.Email = userDto.Email;
+        updateUser.Password = userDto.Password;
+        updateUser.Role = userDto.Role;
+
+        await _userRepository.UpdateAsync(updateUser);
+    }
+
+    public async Task RemoveUserAsync(int id)
+    {
+        var deleteUser = await _userRepository.GetByIdAsync(id);
+
+        if (deleteUser == null) throw new Exception("User not found");
+
+        await _userRepository.RemoveAsync(deleteUser);
+    }
+
+    public async Task<UserDto?> GetUserAsync(int id)
+    {
+        var getUser = await _userRepository.GetByIdAsync(id);
+        
+        if (getUser == null) throw new Exception("User not found");
+
+        var user = new UserDto
+        {
+            Username = getUser.Username,
+            Email = getUser.Email,
+            Role = getUser.Role
+        };
+
+        return user;
+    }
+
+    public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
+    {
+        var getUsers = await _userRepository.GetAllAsync();
+        
+        return getUsers.Select(user => new UserDto
+        {
+            Username = user.Username,
+            Email = user.Email,
+            Role = user.Role
+        });
+    }
+}

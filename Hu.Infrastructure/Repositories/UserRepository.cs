@@ -1,47 +1,50 @@
 using Hu.Domain.Entities;
 using Hu.Domain.Interfaces;
 using Hu.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hu.Infrastructure.Repositories;
 
 public class UserRepository : IUserRepository
 {
     private readonly AppDbContext _appDbContext;
+
     public UserRepository(AppDbContext appDbContext)
     {
-        _appDbContext = appDbContext;
+        _appDbContext = appDbContext; // Db
     }
-    
+
     public async Task AddAsync(User user)
     {
         _appDbContext.Users.Add(user);
         await _appDbContext.SaveChangesAsync();
     }
 
-    public Task UpdateAsync(User user)
+    public async Task UpdateAsync(User user)
     {
-        throw new NotImplementedException();
+        _appDbContext.Users.Update(user);
+        await _appDbContext.SaveChangesAsync();
     }
 
-    public Task DeleteAsync(User user)
+    public async Task RemoveAsync(User user)
     {
-        throw new NotImplementedException();
+        _appDbContext.Users.Remove(user);
+        await _appDbContext.SaveChangesAsync();
     }
 
-    
     // Get
-    public Task<User> GetByIdAsync(int id)
+    public async Task<User?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _appDbContext.Users.FindAsync(id);
     }
 
-    public Task<User> GetByEmailAsync(string email)
+    public async Task<User?> GetByEmailAsync(string email)
     {
-        throw new NotImplementedException();
+        return await _appDbContext.Users.SingleOrDefaultAsync(user => user.Email == email);
     }
 
-    public Task<IEnumerable<User>> GetAllAsync()
+    public async Task<IEnumerable<User>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return await _appDbContext.Users.ToListAsync();
     }
 }

@@ -23,6 +23,7 @@ public class AppDbContext : DbContext
             user.Property(x => x.Email).IsRequired().HasMaxLength(250);
             user.HasIndex(x => x.Email).IsUnique();
             user.Property(x => x.Password).IsRequired().HasMaxLength(250);
+            user.Property(u => u.Role).HasConversion<string>();
         });
 
         modelBuilder.Entity<Product>(product =>
