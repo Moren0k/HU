@@ -1,5 +1,4 @@
 using Hu.Application.DTOs;
-using Hu.Domain.Entities;
 
 namespace Hu.Application.Interfaces;
 

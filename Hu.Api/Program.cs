@@ -23,10 +23,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Registrar repositorios
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 // Registrar servicios
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 // Configuración pública
 var configuration = builder.Configuration;

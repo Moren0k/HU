@@ -19,7 +19,7 @@ public class UserService : IUserService
     public async Task RegisterUserAsync(RegisterUserDto userDto)
     {
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
-        
+
         var registerUser = new User
         {
             Username = userDto.Username,
@@ -42,9 +42,11 @@ public class UserService : IUserService
 
         if (updateUser == null) throw new Exception("User not found");
 
+        var hashedPassword = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
+
         updateUser.Username = userDto.Username;
         updateUser.Email = userDto.Email;
-        updateUser.Password = userDto.Password;
+        updateUser.Password = hashedPassword;
         updateUser.Role = userDto.Role;
 
         await _userRepository.UpdateAsync(updateUser);
@@ -52,17 +54,17 @@ public class UserService : IUserService
 
     public async Task RemoveUserAsync(int id)
     {
-        var deleteUser = await _userRepository.GetByIdAsync(id);
+        var removeUser = await _userRepository.GetByIdAsync(id);
 
-        if (deleteUser == null) throw new Exception("User not found");
+        if (removeUser == null) throw new Exception("User not found");
 
-        await _userRepository.RemoveAsync(deleteUser);
+        await _userRepository.RemoveAsync(removeUser);
     }
 
     public async Task<UserDto?> GetUserAsync(int id)
     {
         var getUser = await _userRepository.GetByIdAsync(id);
-        
+
         if (getUser == null) throw new Exception("User not found");
 
         var user = new UserDto
@@ -78,7 +80,7 @@ public class UserService : IUserService
     public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
     {
         var getUsers = await _userRepository.GetAllAsync();
-        
+
         return getUsers.Select(user => new UserDto
         {
             Username = user.Username,
