@@ -11,6 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hu.Domain", "Hu.Domain\Hu.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hu.Infrastructure", "Hu.Infrastructure\Hu.Infrastructure.csproj", "{2E7ADCE3-025A-4A38-8BD9-A5EEE514850F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{209EF085-904E-4C09-845E-58BF7C5458C2}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -1,0 +1,45 @@
+﻿version: "3.9"
+
+services:
+  api:
+    image: hu.api
+    build:
+      context: .                    # Raíz del proyecto (donde están todas las carpetas)
+      dockerfile: Hu.Api/Dockerfile # Solo este Dockerfile construye todo el sistema
+    container_name: hu_api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    env_file:
+      - .env                        # Carga tus variables (JWT, DB_CONNECTION, etc.)
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Production"
+      ASPNETCORE_URLS: "http://+:8080"
+      # Ajustamos la conexión para apuntar al servicio MySQL del compose
+      DB_CONNECTION: "Server=db;Database=HU;User Id=kevin;Password=4995;"
+    networks:
+      - hu_net
+
+  db:
+    image: mysql:8.0
+    container_name: hu_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: HU
+      MYSQL_USER: kevin
+      MYSQL_PASSWORD: 4995
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - hu_net
+
+volumes:
+  db_data:
+
+networks:
+  hu_net:
+    driver: bridge

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 // Cargar variables desde .env
-Env.Load();
+Env.Load("../.env");
 
 var builder = WebApplication.CreateBuilder(args);
 
